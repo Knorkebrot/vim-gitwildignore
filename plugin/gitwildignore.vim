@@ -44,8 +44,7 @@ function! Get_file_patterns(gitignore)
   return l:file_patterns
 endfunction
 
-
-let gitignore_files = split(globpath('**', '\.gitignore'), '\n')
+let gitignore_files = split(system("git ls-files | grep '\.gitignore$'"), '\n')
 
 let wildignore_file_patterns = []
 for gitignore_file in gitignore_files
