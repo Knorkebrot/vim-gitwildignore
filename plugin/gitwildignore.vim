@@ -1,7 +1,4 @@
-" gitwildignore - Vundle plugin for appendng files in .gitignore to wildignore
-" Maintainer: Zach Wolfe <zdwolfe.github.io>
-" Version 0.0.1
-" Inspired by Adam Bellaire's gitignore script
+" gitwildignore - Plugin for appendng files in .gitignore to wildignore
 
 if exists('g:loaded_gitwildignore')
   finish
