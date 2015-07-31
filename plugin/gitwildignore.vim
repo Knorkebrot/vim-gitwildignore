@@ -1,4 +1,4 @@
-" gitwildignore - Plugin for appendng files in .gitignore to wildignore
+" gitwildignore - Plugin for appending files in .gitignore to wildignore
 
 if exists('g:loaded_gitwildignore')
   finish
