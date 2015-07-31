@@ -41,12 +41,15 @@ function! Get_file_patterns(gitignore)
   return l:file_patterns
 endfunction
 
-let gitignore_files = split(system("git ls-files | grep '\.gitignore$'"), '\n')
+" excludesfile defaults
+let gitignore_files = [ '~/git/ignore', '~/.config/git/ignore' ]
+let gitignore_files += split(system('git config core.excludesfile'), '\n')
+let gitignore_files += split(system("git ls-files | grep '\.gitignore$'"), '\n')
 
 let wildignore_file_patterns = []
 for gitignore_file in gitignore_files
   let wildignore_file_patterns += Get_file_patterns(gitignore_file)
 endfor
 
-let execthis = "set wildignore+=" . join(wildignore_file_patterns, ',')
+let execthis = 'set wildignore+=' . join(wildignore_file_patterns, ',')
 execute execthis
