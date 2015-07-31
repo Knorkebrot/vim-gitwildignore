@@ -8,10 +8,19 @@ appended to your wildignore. Useful when accompanied with the
 There's another [fork][fork] by @mikewadsten that may work better for you, but
 it depends on other plugins while the original and this fork don't.
 
+Changes
+-------
+
+- Support ignores that contain whitespace
+- Support ignores that are relative to the gitignore's dir
+- Use `git ls-files` for finding .gitignores
+- Respect the user's excludesfile and it's defaults if not defined
+
 ToDo
 ----
 
-Also find and parse `.git/info/exclude`.
+- Also find and parse `.git/info/exclude`.
+- Support "unignored" paths (lines beginning with '!')
 
 
 - - - - -
