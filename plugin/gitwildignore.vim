@@ -38,6 +38,7 @@ function! Get_file_patterns(gitignore)
       else
         let l:file_pattern = l:prefix . line
       endif
+      let l:file_pattern = substitute(l:file_pattern, ' ', '\\ ', 'g')
       let l:file_patterns += [ l:file_pattern ]
     endfor
   endif
