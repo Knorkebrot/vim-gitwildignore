@@ -27,6 +27,7 @@ function! Get_file_patterns(gitignore)
         " lines beginning with '!' are 'important' files and should be
         " included even if they were previously ignored
         " currently unimplemented
+        continue
       elseif (line =~ '/$')
         let l:directory = substitute(line, '/$', '', '')
         let l:file_pattern = l:prefix . l:directory . '/*'
