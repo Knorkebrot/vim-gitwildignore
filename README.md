@@ -15,6 +15,7 @@ Changes
 - Support ignores that are relative to the gitignore's dir
 - Use `git ls-files` for finding .gitignores
 - Respect the user's excludesfile and it's defaults if not defined
+- Local .gitignores apply to their directory
 
 ToDo
 ----
