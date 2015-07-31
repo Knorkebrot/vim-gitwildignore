@@ -21,6 +21,10 @@ function! Get_file_patterns(gitignore)
     " See PATTERN FORMAT
     for line in readfile(l:gitignore)
       let l:file_pattern = ''
+      let l:prefix = '*/'
+      if (line =~ '^/')
+        let l:prefix = l:path
+      endif
       if or(line =~ '^#', line == '')
         continue
       elseif line =~ '^!'
@@ -30,9 +34,9 @@ function! Get_file_patterns(gitignore)
         let importants += l:path . '/' . line
       elseif (line =~ '/$')
         let l:directory = substitute(line, '/$', '', '')
-        let l:file_pattern = '*/' . l:directory . '/*'
-      else 
-        let l:file_pattern = line
+        let l:file_pattern = l:prefix . l:directory . '/*'
+      else
+        let l:file_pattern = l:prefix . line
       endif
       let l:file_patterns += [ l:file_pattern ]
     endfor
