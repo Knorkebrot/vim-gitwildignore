@@ -11,9 +11,9 @@ function! Get_file_patterns(gitignore)
   let l:gitignore = fnamemodify(a:gitignore, ':p')
   let l:path = fnamemodify(a:gitignore, ':p:h')
 
-  let l:file_patterns = []
+  let l:ret = []
   if !filereadable(l:gitignore)
-    return l:file_patterns
+    return l:ret
   endif
 
   " Parse each line according to http://git-scm.com/docs/gitignore
@@ -36,15 +36,15 @@ function! Get_file_patterns(gitignore)
     let l:file_pattern = substitute(l:file_pattern, '\s', '\\\0', 'g')
 
     if (line =~ '^/')
-      let l:file_patterns += [ l:path . l:file_pattern ]
+      let l:ret += [ l:path . l:file_pattern ]
     elseif (l:path =~ '^' . getcwd())
-      let l:file_patterns += [ l:path . '/' . l:file_pattern, l:path . '/**/' . l:file_pattern ]
+      let l:ret += [ l:path . '/' . l:file_pattern, l:path . '/**/' . l:file_pattern ]
     else
-      let l:file_patterns += [ l:file_pattern ]
+      let l:ret += [ l:file_pattern ]
     endif
   endfor
 
-  return l:file_patterns
+  return l:ret
 endfunction
 
 " excludesfile defaults
