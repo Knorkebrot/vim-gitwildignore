@@ -20,7 +20,6 @@ Changes
 ToDo
 ----
 
-- Also find and parse `.git/info/exclude`.
 - Support "unignored" paths (lines beginning with '!')
 
 

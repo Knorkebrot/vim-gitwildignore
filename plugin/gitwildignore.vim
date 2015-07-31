@@ -16,6 +16,10 @@ function! Get_file_patterns(gitignore)
     return l:ret
   endif
 
+  if l:path =~ "/.git/info$"
+    let l:path = fnamemodify(fnamemodify(l:path, ':h'), ':h')
+  endif
+
   " Parse each line according to http://git-scm.com/docs/gitignore
   " See PATTERN FORMAT
   for line in readfile(l:gitignore)
@@ -35,9 +39,9 @@ function! Get_file_patterns(gitignore)
     endif
     let l:file_pattern = substitute(l:file_pattern, '\s', '\\\0', 'g')
 
-    if (line =~ '^/')
+    if line =~ '^/'
       let l:ret += [ l:path . l:file_pattern ]
-    elseif (l:path =~ '^' . getcwd())
+    elseif l:path =~ '^' . getcwd()
       let l:ret += [ l:path . '/' . l:file_pattern, l:path . '/**/' . l:file_pattern ]
     else
       let l:ret += [ l:file_pattern ]
@@ -47,10 +51,27 @@ function! Get_file_patterns(gitignore)
   return l:ret
 endfunction
 
+" Check if we're in a git repository and if we are, search for .gitignores
+" and the local exclude file
+function! Get_local_gitignores()
+  let l:ret = []
+  let l:gitroot = system('git rev-parse --show-toplevel')
+  if l:gitroot =~ '^fatal: '
+    return l:ret
+  endif
+  let l:gitroot = substitute(l:gitroot, '\n', '', '')
+  let l:ret += [ l:gitroot . '/.git/info/exclude' ]
+  let l:ret += split(system("git ls-files | grep '\.gitignore$'"), '\n')
+  return l:ret
+endfunction
+
+" Collect gitignore files
 " excludesfile defaults
 let gitignore_files = [ '~/git/ignore', '~/.config/git/ignore' ]
+" excludesfile user defined
 let gitignore_files += split(system('git config core.excludesfile'), '\n')
-let gitignore_files += split(system("git ls-files | grep '\.gitignore$'"), '\n')
+" project's excludesfile and .gitignores
+let gitignore_files += Get_local_gitignores()
 
 let wildignore_file_patterns = []
 for gitignore_file in gitignore_files
