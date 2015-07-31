@@ -7,7 +7,6 @@ if exists('g:loaded_gitwildignore')
   finish
 endif
 let g:loaded_gitwildignnore = 1
-let importants = []
 
 " Return a list of file patterns we want to ignore in the gitignore
 " file parameter
@@ -31,7 +30,6 @@ function! Get_file_patterns(gitignore)
         " lines beginning with '!' are 'important' files and should be
         " included even if they were previously ignored
         " currently unimplemented
-        let importants += l:path . '/' . line
       elseif (line =~ '/$')
         let l:directory = substitute(line, '/$', '', '')
         let l:file_pattern = l:prefix . l:directory . '/*'
