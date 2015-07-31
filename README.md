@@ -14,5 +14,11 @@ ToDo
 Also find and parse `.git/info/exclude`.
 
 
+- - - - -
+
+This is a fork of the original [vim-gitwildignore][orig] by zdwolfe.
+
+
 [ctrlp]: https://github.com/kien/ctrlp.vim
 [fork]: https://github.com/mikewadsten/vim-gitwildignore
+[orig]: https://github.com/zdwolfe/vim-gitwildignore
