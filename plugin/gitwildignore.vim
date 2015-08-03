@@ -86,13 +86,13 @@ function! Get_local_gitignores()
 endfunction
 
 " concat global and local gitignores
-let gitignore_files = s:gitignore_globals
-let gitignore_files += Get_local_gitignores()
+let s:gitignore_files = s:gitignore_globals
+let s:gitignore_files += Get_local_gitignores()
 
-let wildignore_file_patterns = []
-for gitignore_file in gitignore_files
-  let wildignore_file_patterns += Get_file_patterns(gitignore_file)
+let s:wildignore_file_patterns = []
+for s:gitignore_file in s:gitignore_files
+  let s:wildignore_file_patterns += Get_file_patterns(s:gitignore_file)
 endfor
 
-let execthis = 'set wildignore+=' . join(wildignore_file_patterns, ',')
-execute execthis
+let s:execthis = 'set wildignore+=' . join(s:wildignore_file_patterns, ',')
+execute s:execthis
