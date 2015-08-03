@@ -1,9 +1,25 @@
-" gitwildignore - Plugin for appending files in .gitignore to wildignore
+" gitwildignore - Plugin for appending files in .gitignore to wildignore/
 
 if exists('g:loaded_gitwildignore')
   finish
 endif
 let g:loaded_gitwildignnore = 1
+
+" Collect gitignore global files
+" excludesfile defaults
+let s:gitignore_globals = [ expand('~/git/ignore'), expand('~/.config/git/ignore') ]
+" excludesfile user defined
+let s:gitignore_globals += [ expand(substitute(system('git config core.excludesfile'), '\n\+$', '', '')) ]
+
+function! Is_global_file(file)
+  let l:is_global = 0
+  for f in s:gitignore_globals
+    if a:file == f
+      let l:is_global = 1
+    endif
+  endfor
+  return l:is_global
+endfunction
 
 " Return a list of file patterns we want to ignore in the gitignore
 " file parameter
@@ -39,7 +55,11 @@ function! Get_file_patterns(gitignore)
     endif
     let l:file_pattern = substitute(l:file_pattern, '\s', '\\\0', 'g')
 
-    if line =~ '^/'
+    let l:is_global = Is_global_file(l:gitignore)
+
+    if l:is_global == 1
+      let l:ret += [ l:file_pattern ]
+    elseif line =~ '^/'
       let l:ret += [ l:path . l:file_pattern ]
     elseif l:path =~ '^' . getcwd()
       let l:ret += [ l:path . '/' . l:file_pattern, l:path . '/**/' . l:file_pattern ]
@@ -65,12 +85,8 @@ function! Get_local_gitignores()
   return l:ret
 endfunction
 
-" Collect gitignore files
-" excludesfile defaults
-let gitignore_files = [ '~/git/ignore', '~/.config/git/ignore' ]
-" excludesfile user defined
-let gitignore_files += split(system('git config core.excludesfile'), '\n')
-" project's excludesfile and .gitignores
+" concat global and local gitignores
+let gitignore_files = s:gitignore_globals
 let gitignore_files += Get_local_gitignores()
 
 let wildignore_file_patterns = []
